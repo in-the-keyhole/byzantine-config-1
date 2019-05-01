@@ -142,7 +142,7 @@ function createWindow() {
   // let icon = nativeImage.createFromPath(__dirname + '../images/icons/png/16x16.png')
   mainWindow = new BrowserWindow({
     show: false,
-    width: 900,
+    width: 1024,
     height: 860,
     icon: path.join(__dirname, '../images/icons/png/64x64.png')
   });
@@ -368,20 +368,25 @@ function createWindow() {
 
     global.originaljson = JSON.parse(JSON.stringify(global.modifiedjson));
 
+    let updated = '';
+
     if (configupdate.batchsize) {
       global.modifiedjson.channel_group.groups.Orderer.values.BatchSize.value.max_message_count = parseInt(
         configupdate.batchsize
       );
+      updated += 'Batch Size, ';
     }
 
     if (configupdate.consensustype) {
       global.modifiedjson.channel_group.groups.Orderer.values.ConsensusType.value.type =
         configupdate.consensustype;
+      updated += 'Consensus Type, ';
     }
 
     if (configupdate.batchtimeout) {
       global.modifiedjson.channel_group.groups.Orderer.values.BatchTimeout.value.timeout =
         configupdate.batchtimeout;
+      updated += 'Batch Timeout, ';
     }
 
     if (configupdate.orderers) {
@@ -398,7 +403,61 @@ function createWindow() {
       global.modifiedjson.channel_group.values.Consortium.value.name = configupdate.consortium;
     }
 
-    event.returnValue = 'JSON Merged';
+    if (configupdate.ordererpolicyadmintype) {
+      global.modifiedjson.channel_group.groups.Orderer.policies.Admins.policy.type =
+        configupdate.ordererpolicyadmintype;
+      updated += 'Orderer Admin Policy Type, ';
+    }
+
+    if (configupdate.ordererpolicyadminrule) {
+      global.modifiedjson.channel_group.groups.Orderer.policies.Admins.policy.value.rule =
+        configupdate.ordererpolicyadminrule;
+      updated += 'Orderer Admin Policy Rule, ';
+    }
+
+    if (configupdate.ordererpolicyadminsubpol) {
+      global.modifiedjson.channel_group.groups.Orderer.policies.Admins.policy.value.sub_policy =
+        configupdate.ordererpolicyadminsubpol;
+      updated += 'Orderer Admin Sub Policy, ';
+    }
+
+    if (configupdate.ordererpolicywritertype) {
+      global.modifiedjson.channel_group.groups.Orderer.policies.Writers.policy.type =
+        configupdate.ordererpolicywritertype;
+      updated += 'Orderer Writers Policy Type, ';
+    }
+
+    if (configupdate.ordererpolicywriterrule) {
+      global.modifiedjson.channel_group.groups.Orderer.policies.Writers.policy.value.rule =
+        configupdate.ordererpolicywriterrule;
+      updated += 'Orderer Writers Policy Rule, ';
+    }
+
+    if (configupdate.ordererpolicywritersubpol) {
+      global.modifiedjson.channel_group.groups.Orderer.policies.Writers.policy.value.sub_policy =
+        configupdate.ordererpolicywritersubpol;
+      updated += 'Orderer Writers Sub Policy, ';
+    }
+
+    if (configupdate.ordererpolicyreadertype) {
+      global.modifiedjson.channel_group.groups.Orderer.policies.Readers.policy.type =
+        configupdate.ordererpolicyreadertype;
+      updated += 'Orderer Readers Policy Type, ';
+    }
+
+    if (configupdate.ordererpolicyreaderrule) {
+      global.modifiedjson.channel_group.groups.Orderer.policies.Readers.policy.value.rule =
+        configupdate.ordererpolicyreaderrule;
+      updated += 'Orderer Readers Policy Rule, ';
+    }
+
+    if (configupdate.ordererpolicyreadersubpol) {
+      global.modifiedjson.channel_group.groups.Orderer.policies.Readers.policy.value.sub_policy =
+        configupdate.ordererpolicyreadersubpol;
+      updated += 'Orderer Readers Sub Policy, ';
+    }
+
+    event.returnValue = 'JSON Merged with following updates = ' + updated;
   });
 
   ipcMain.on('mergecrypto', (event, jsonstring) => {

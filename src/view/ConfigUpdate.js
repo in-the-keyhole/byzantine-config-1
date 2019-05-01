@@ -116,7 +116,7 @@ class ConfigUpdate extends Component {
     if (response.indexOf('ERROR:') >= 0) {
       current = 'ERROR merging config JSON';
     } else {
-      current = 'New Config Properties Merged...';
+      current = response;
     }
 
     this.operations.push(current);

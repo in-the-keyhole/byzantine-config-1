@@ -1,5 +1,5 @@
 'use strict';
-/** 
+/**
 Copyright 2018 Keyhole Software LLC
 
 Licensed under the Apache License, Version 2.0 (the "License");
