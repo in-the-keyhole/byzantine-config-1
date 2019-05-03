@@ -1,4 +1,3 @@
-'use strict';
 /** 
 Copyright 2018 Keyhole Software LLC
 
@@ -14,7 +13,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-var path = require('path');
 var hfc = require('fabric-client');
 var config = require('../config.js');
 var log4js = require('log4js');
@@ -22,10 +20,8 @@ var logger = log4js.getLogger('service/util.js');
 
 logger.level = config.loglevel;
 
-var channelid = null;
 var client = null;
 var peer = null;
-var org = config.org;
 var pool = [];
 
 var connectChannel = function(channel_id) {
@@ -52,7 +48,7 @@ var connectChannel = function(channel_id) {
       logger.debug('Check user is enrolled, and set a query URL in the network');
       if (user === undefined || user === null || user.isEnrolled() === false) {
         logger.error('User not defined, or not enrolled - error');
-        throw 'ERROR: User Not Enrolled';
+        throw new Error('ERROR: User Not Enrolled');
       }
 
       if (channel == null) {
@@ -66,7 +62,6 @@ var connectChannel = function(channel_id) {
         }
 
         channel.addPeer(peer);
-        channelid = channel_id;
         let channel_event_hub = channel.newChannelEventHub(peer);
 
         add(channel_id, channel);
@@ -83,7 +78,7 @@ var connectChannel = function(channel_id) {
         channel_event_hub.connect(true);
 
         logger.info('Is Event Hub Connected ' + channel_event_hub.isconnected());
-        logger.info('Event Hub Registerd: ' + block_reg);
+        logger.info('Event Hub Registered: ' + block_reg);
       }
 
       return channel;
@@ -110,7 +105,7 @@ var get = function(cid) {
 var add = function(id, c) {
   let add = true;
   for (var i = 0; i < pool.length; i++) {
-    if (pool[i].channelid == id) {
+    if (pool[i].channelid === id) {
       add = false;
       break;
     }
