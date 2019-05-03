@@ -177,7 +177,7 @@ function createWindow() {
     } catch (e) {
       event.returnValue = 'ERROR';
       logger.info(
-        'ERROR: Crytpo Configuration failed, make sure cryptogen binary is in the path. ' + e
+        'ERROR: Crypto Configuration failed, make sure cryptogen binary is in the path. ' + e
       );
     }
   });
